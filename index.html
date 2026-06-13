@@ -50,6 +50,34 @@
             flex-direction: column;
             gap: 28px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        /* Widget Live Date & Time */
+        .live-clock-widget {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            align-self: center;
+            letter-spacing: 0.5px;
+        }
+        .live-clock-widget i {
+            color: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
 
         /* Profile Section */
@@ -211,6 +239,12 @@
                 padding: 45px 40px;
             }
 
+            /* Widget nangkring rapi di rentang dua kolom paling atas */
+            .live-clock-widget {
+                grid-column: span 2;
+                margin-bottom: 5px;
+            }
+
             /* Sisi Kiri: Profil & Sosmed berkumpul rapi */
             .left-side {
                 display: flex;
@@ -243,6 +277,11 @@
 
 <div class="card">
     
+    <div class="live-clock-widget">
+        <i class="fa-solid fa-circle"></i>
+        <span id="liveDateTime">Memuat Waktu...</span>
+    </div>
+
     <div class="left-side">
         <div class="profile">
             <img src="https://lh3.googleusercontent.com/d/1D9T3nny1GzaCv2zm_migNOz12qLOTtqM" alt="Muhammad Avie Sienna" class="profile-img">
@@ -302,15 +341,47 @@
     </div>
 
     <div class="footer">
-        © <span id="year"></span> Muhammad Avie Sienna • Perencana Keuangan Profesional
+        © <span id="year"></span> Muhammad Avie Sienna
     </div>
 </div>
 
 <script>
-    // Set Tahun Otomatis di Footer
+    // Fungsi Update Jam dan Tanggal Real-Time Otomatis
+    function updateLiveClock() {
+        const sekarang = new Date();
+        
+        // Array nama hari dan bulan Indonesia
+        const hariList = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const bulanList = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        
+        const namaHari = hariList[sekarang.getDay()];
+        const tanggal = sekarang.getDate();
+        const namaBulan = bulanList[sekarang.getMonth()];
+        const tahun = sekarang.getFullYear();
+        
+        // Format waktu dengan dua digit angka
+        let jam = sekarang.getHours();
+        let menit = sekarang.getMinutes();
+        let detik = sekarang.getSeconds();
+        
+        jam = jam < 10 ? '0' + jam : jam;
+        menit = menit < 10 ? '0' + menit : menit;
+        detik = detik < 10 ? '0' + detik : detik;
+        
+        // Menggabungkan string teks tanggal & jam
+        const formatTeks = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} • ${jam}:${menit}:${detik}`;
+        
+        document.getElementById('liveDateTime').textContent = formatTeks;
+    }
+
+    // Jalankan jam live pertama kali, lalu perbarui setiap 1 detik (1000 milidetik)
+    updateLiveClock();
+    setInterval(updateLiveClock, 1000);
+
+    // Set Tahun Otomatis Mengikuti Waktu Berjalan di Bagian Footer
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Atur Tanggal Otomatis Minimal Hari Ini (Mengunci pilihan tanggal kemarin)
+    // Atur Batas Minimum Tanggal Pilihan di Input Form (Hari Ini & Seterusnya)
     const hariIni = new Date();
     const yyyy = hariIni.getFullYear();
     let mm = hariIni.getMonth() + 1; 
