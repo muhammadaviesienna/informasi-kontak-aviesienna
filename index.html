@@ -410,7 +410,7 @@
 </div>
 
 <script>
-    // SISTEM MANAGEMENT TEMA (GELAP/TERANG) + MEMORY STORAGE
+    // MANAGEMENT TEMA (GELAP/TERANG) + MEMORY STORAGE
     const currentTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', currentTheme);
 
@@ -422,7 +422,7 @@
         localStorage.setItem('theme', newTheme);
     }
 
-    // Fungsi Update Jam dan Tanggal Real-Time Otomatis
+    // Fungsi Update Jam dan Tanggal Real-Time
     function updateLiveClock() {
         const sekarang = new Date();
         const hariList = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -435,7 +435,7 @@
         
         let jam = sekarang.getHours();
         let menit = sekarang.getMinutes();
-        let detik = sekarang.getSeconds();
+        let detik = Thermal = sekarang.getSeconds();
         
         jam = jam < 10 ? '0' + jam : jam;
         menit = menit < 10 ? '0' + menit : menit;
@@ -450,7 +450,7 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Set Minimal Input Tanggal Berlaku Hari Ini (Mencegah Pilih Tanggal Kemarin)
+    // Set Minimal Input Tanggal Berlaku Hari Ini
     const hariIni = new Date();
     const yyyy = hariIni.getFullYear();
     let mm = hariIni.getMonth() + 1; 
