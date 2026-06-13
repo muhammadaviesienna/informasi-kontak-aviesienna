@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Avie Sienna | Contact & Appointment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --accent: #2563eb;
+            --bg-gradient: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
+            --card-bg: rgba(30, 41, 59, 0.45);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(15, 23, 42, 0.6);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 35px 25px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Profile Section */
+        .profile {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-img {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            padding: 4px;
+            object-fit: cover;
+            background: var(--input-bg);
+        }
+
+        h1 { font-size: 1.45rem; margin: 12px 0 4px 0; font-weight: 700; }
+        .subtitle { color: var(--accent); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px; text-transform: uppercase; }
+
+        /* Social Links List */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .contact-item span {
+            flex-grow: 1;
+        }
+
+        /* Styling Ikon agar Berwarna Menarik */
+        .contact-item i.fa-whatsapp { color: #22c55e; font-size: 1.2rem; }
+        .contact-item i.fa-instagram { 
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2rem;
+        }
+        .contact-item i.fa-envelope { color: #ef4444; font-size: 1.1rem; }
+        .contact-item i.fa-arrow-up-right-from-square { color: var(--text-muted); font-size: 0.85rem; }
+
+        /* Appointment Form */
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin: 0 0 12px 4px;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            box-sizing: border-box;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+            margin-top: 18px;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="profile">
+        <img src="https://lh3.googleusercontent.com/d/1D9T3nny1GzaCv2zm_migNOz12qLOTtqM" alt="Muhammad Avie Sienna" class="profile-img">
+        <h1>Muhammad Avie Sienna</h1>
+        <div class="subtitle">Financial Agent & Professional</div>
+    </div>
+
+    <div class="section-title">Hubungi Saya</div>
+    <div class="contact-list">
+        <a href="https://wa.me/6285245867094" target="_blank" class="contact-item">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>WhatsApp Resmi</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="https://instagram.com/avieesiennaa_" target="_blank" class="contact-item">
+            <i class="fa-brands fa-instagram"></i>
+            <span>Instagram</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="mailto:muhammadaviesiena@gmail.com" class="contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <span>Email</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+    </div>
+
+    <div class="section-title">Buat Janji Temu</div>
+    
+    <div class="form-group">
+        <label for="clientName">Nama Lengkap</label>
+        <input type="text" id="clientName" placeholder="Masukkan nama Anda">
+    </div>
+
+    <div class="form-group">
+        <label for="meetDate">Pilih Tanggal</label>
+        <input type="date" id="meetDate">
+    </div>
+
+    <div class="form-group">
+        <label for="meetTime">Pilih Jam Pertemuan</label>
+        <input type="time" id="meetTime">
+    </div>
+
+    <button class="submit-btn" onclick="kirimJanjiTemuWA()">
+        <i class="fa-regular fa-calendar-check"></i> Ajukan Jadwal via WA
+    </button>
+
+    <div class="footer">
+        © <span id="year"></span> Muhammad Avie Sienna
+    </div>
+</div>
+
+<script>
+    // Set Tahun Otomatis di Footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Atur Tanggal Otomatis Minimal Hari Ini
+    const hariIni = new Date();
+    const yyyy = hariIni.getFullYear();
+    let mm = hariIni.getMonth() + 1; 
+    let dd = hariIni.getDate();
+
+    if (mm < 10) mm = '0' + mm;
+    if (dd < 10) dd = '0' + dd;
+
+    const formatHariIni = yyyy + '-' + mm + '-' + dd;
+    const inputTanggal = document.getElementById('meetDate');
+    
+    inputTanggal.min = formatHariIni; 
+    inputTanggal.value = formatHariIni; 
+
+    // Fungsi Mengirim Data Form Otomatis Menjadi Chat WA
+    function kirimJanjiTemuWA() {
+        const nama = document.getElementById('clientName').value.trim();
+        const tanggal = document.getElementById('meetDate').value;
+        const jam = document.getElementById('meetTime').value;
+        const nomorWA = "6285245867094";
+
+        if (!nama) {
+            alert("Silakan masukkan nama Anda terlebih dahulu.");
+            return;
+        }
+        if (!tanggal || !jam) {
+            alert("Silakan pilih tanggal dan jam janji temu.");
+            return;
+        }
+
+        const parts = tanggal.split('-');
+        const tanggalFormatIndo = `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+        const isiPesan = `Halo Pak Avie,\nSaya *${nama}* ingin mengajukan janji temu untuk konsultasi keuangan.\n\n` +
+                         `📅 *Tanggal:* ${tanggalFormatIndo}\n` +
+                         `⏰ *Jam:* ${jam} WIB\n\n` +
+                         `Apakah jadwal tersebut kosong? Terima kasih.`;
+
+        const encodedText = encodeURIComponent(isiPesan);
+        const urlWhatsApp = `https://wa.me/${nomorWA}?text=${encodedText}`;
+
+        window.open(urlWhatsApp, '_blank');
+    }
+</script>
+
+</body>
+</html>
