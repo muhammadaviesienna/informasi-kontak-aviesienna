@@ -175,7 +175,7 @@
             padding-left: 2px;
         }
 
-        .form-group input {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 14px;
             border-radius: 12px;
@@ -187,10 +187,22 @@
             transition: all 0.2s ease;
         }
 
-        .form-group input:focus {
+        .form-group textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-group label span {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 400;
+            margin-left: 4px;
         }
 
         /* Tombol Submit Kirim WA */
@@ -334,6 +346,11 @@
                 <input type="time" id="meetTime">
             </div>
 
+            <div class="form-group">
+                <label for="meetNote">Keterangan Tambahan <span>(Opsional)</span></label>
+                <textarea id="meetNote" placeholder="Tulis catatan atau topik yang ingin dibahas (contoh: Bahas rencana asuransi, lokasi bertemu, dll)..."></textarea>
+            </div>
+
             <button class="submit-btn" onclick="kirimJanjiTemuWA()">
                 <i class="fa-regular fa-calendar-check"></i> Ajukan Jadwal via WA
             </button>
@@ -356,10 +373,10 @@
         const namaHari = hariList[sekarang.getDay()];
         const tanggal = sekarang.getDate();
         const namaBulan = bulanList[sekarang.getMonth()];
-        const tahun = ClinicalYear = sekarang.getFullYear();
+        const tahun = sekarang.getFullYear();
         
         let jam = sekarang.getHours();
-        let menit = sekarang.getMinutes();
+        let menit = nowMinutes = sekarang.getMinutes();
         let detik = sekarang.getSeconds();
         
         jam = jam < 10 ? '0' + jam : jam;
@@ -395,6 +412,7 @@
         const nama = document.getElementById('clientName').value.trim();
         const tanggal = document.getElementById('meetDate').value;
         const jam = document.getElementById('meetTime').value;
+        const keterangan = document.getElementById('meetNote').value.trim();
         const nomorWA = "6285245867094";
 
         if (!nama) {
@@ -406,14 +424,21 @@
             return;
         }
 
+        // Format konversi tanggal (YYYY-MM-DD menjadi DD/MM/YYYY)
         const parts = tanggal.split('-');
         const tanggalFormatIndo = `${parts[2]}/${parts[1]}/${parts[0]}`;
 
-        // Mengubah sapaan menjadi Halo Pak *Muhammad Avie Sienna* (Bold)
-        const isiPesan = `Halo Pak *Muhammad Avie Sienna*,\nSaya *${nama}* ingin mengajukan janji temu.\n\n` +
-                         `📅 *Tanggal:* ${tanggalFormatIndo}\n` +
-                         `⏰ *Jam:* ${jam} WIB\n\n` +
-                         `Apakah jadwal tersebut kosong? Terima kasih.`;
+        // Mengatur teks pesan utama
+        let isiPesan = `Halo Pak *Muhammad Avie Sienna*,\nSaya *${nama}* ingin mengajukan janji temu.\n\n` +
+                       `📅 *Tanggal:* ${tanggalFormatIndo}\n` +
+                       `⏰ *Jam:* ${jam} WIB`;
+
+        // Sistem Otomatis: Hanya tambahkan teks catatan ke WA jika kolom keterangan diisi oleh klien
+        if (keterangan) {
+            isiPesan += `\n📝 *Keterangan:* ${keterangan}`;
+        }
+
+        isiPesan += `\n\nApakah jadwal tersebut kosong? Terima kasih.`;
 
         const encodedText = encodeURIComponent(isiPesan);
         const urlWhatsApp = `https://wa.me/${nomorWA}?text=${encodedText}`;
