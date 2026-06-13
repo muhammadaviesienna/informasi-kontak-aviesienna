@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        /* VARIABEL WARNA (DEFAULT: MODE GELAP) */
         :root {
             --accent: #2563eb;
             --accent-hover: #1d4ed8;
@@ -16,12 +17,25 @@
             --text-muted: #94a3b8;
             --border-color: rgba(255, 255, 255, 0.08);
             --input-bg: rgba(15, 23, 42, 0.6);
+            --widget-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        /* VARIABEL WARNA (MODE TERANG) */
+        [data-theme="light"] {
+            --bg-gradient: radial-gradient(circle at 50% 50%, #f1f5f9 0%, #e2e8f0 100%);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(15, 23, 42, 0.08);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --widget-bg: rgba(15, 23, 42, 0.04);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         body {
@@ -35,7 +49,7 @@
             padding: 20px;
         }
 
-        /* Container Utama - Responsif Flex/Grid */
+        /* Container Utama */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(24px);
@@ -44,14 +58,42 @@
             width: 100%;
             max-width: 440px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             padding: 30px 24px;
             display: flex;
             flex-direction: column;
             gap: 28px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
         }
+
+        /* Tombol Toggle Mode Gelap / Terang */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            z-index: 10;
+        }
+        .theme-toggle-btn:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        /* Ikon Bulan/Matahari Otomatis Sembunyi Sesuai Mode */
+        .theme-toggle-btn .fa-sun { display: none; color: #f59e0b; }
+        .theme-toggle-btn .fa-moon { display: block; }
+        [data-theme="light"] .theme-toggle-btn .fa-sun { display: block; }
+        [data-theme="light"] .theme-toggle-btn .fa-moon { display: none; }
 
         /* Widget Live Date & Time */
         .live-clock-widget {
@@ -59,7 +101,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--widget-bg);
             border: 1px solid var(--border-color);
             padding: 8px 16px;
             border-radius: 30px;
@@ -68,6 +110,7 @@
             font-weight: 500;
             align-self: center;
             letter-spacing: 0.5px;
+            margin-right: 45px; /* Memberi ruang agar tidak tabrakan dengan tombol tema di mobile */
         }
         .live-clock-widget i {
             color: var(--accent);
@@ -93,7 +136,7 @@
             padding: 4px;
             object-fit: cover;
             background: var(--input-bg);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
         }
 
         h1 { font-size: 1.4rem; margin: 16px 0 6px 0; font-weight: 700; letter-spacing: -0.5px; }
@@ -131,14 +174,12 @@
             font-weight: 500;
             font-size: 0.95rem;
             border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
         }
 
         .contact-item:hover {
             border-color: var(--accent);
             transform: translateY(-2px);
             background: rgba(37, 99, 235, 0.08);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
         }
 
         .contact-item span { flex-grow: 1; }
@@ -184,7 +225,14 @@
             color: var(--text-main);
             font-size: 0.95rem;
             font-family: inherit;
-            transition: all 0.2s ease;
+        }
+
+        /* Penyesuaian ikon kalender/jam bawaan browser pada mode terang */
+        [data-theme="light"] input[type="date"], [data-theme="light"] input[type="time"] {
+            color-scheme: light;
+        }
+        input[type="date"], input[type="time"] {
+            color-scheme: dark;
         }
 
         .form-group textarea {
@@ -200,7 +248,8 @@
 
         .form-group label span {
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
+            opacity: 0.6;
             font-weight: 400;
             margin-left: 4px;
         }
@@ -221,14 +270,12 @@
             justify-content: center;
             gap: 10px;
             box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
-            transition: all 0.2s ease;
             margin-top: 6px;
         }
 
         .submit-btn:hover {
             background: var(--accent-hover);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
         .footer {
@@ -238,7 +285,7 @@
             margin-top: 10px;
         }
 
-        /* MEDIA QUERY: KHUSUS TAMPILAN DESKTOP */
+        /* MEDIA QUERY: TAMPILAN DESKTOP */
         @media (min-width: 768px) {
             .card {
                 max-width: 840px;
@@ -252,6 +299,7 @@
             .live-clock-widget {
                 grid-column: span 2;
                 margin-bottom: 5px;
+                margin-right: 0; /* Reset margin kanan pada desktop */
             }
 
             .left-side {
@@ -283,6 +331,10 @@
 <body>
 
 <div class="card">
+    <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Ubah Mode Tema">
+        <i class="fa-solid fa-moon"></i>
+        <i class="fa-solid fa-sun"></i>
+    </button>
     
     <div class="live-clock-widget">
         <i class="fa-solid fa-circle"></i>
@@ -358,13 +410,26 @@
 </div>
 
 <script>
+    // SISTEM MANAGEMENT TEMA (GELAP/TERANG) + MEMORY STORAGE
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+
+    function toggleTheme() {
+        let theme = document.documentElement.getAttribute('data-theme');
+        let newTheme = (theme === 'dark') ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+
+    // Fungsi Update Jam dan Tanggal Real-Time Otomatis
     function updateLiveClock() {
         const sekarang = new Date();
         const hariList = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         const bulanList = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         
         const namaHari = hariList[sekarang.getDay()];
-        const tanggal = Thermal = sekarang.getDate();
+        const tanggal = sekarang.getDate();
         const namaBulan = bulanList[sekarang.getMonth()];
         const tahun = sekarang.getFullYear();
         
@@ -385,6 +450,7 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    // Set Minimal Input Tanggal Berlaku Hari Ini (Mencegah Pilih Tanggal Kemarin)
     const hariIni = new Date();
     const yyyy = hariIni.getFullYear();
     let mm = hariIni.getMonth() + 1; 
@@ -399,6 +465,7 @@
     inputTanggal.min = formatHariIni; 
     inputTanggal.value = formatHariIni; 
 
+    // Fungsi Pengiriman Data Form ke WhatsApp
     function kirimJanjiTemuWA() {
         const nama = document.getElementById('clientName').value.trim();
         const tanggal = document.getElementById('meetDate').value;
