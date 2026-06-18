@@ -64,7 +64,7 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 24px; /* Memberikan jeda antar bagian agar tidak berdekatan */
+            gap: 24px;
             position: relative;
         }
 
@@ -91,7 +91,6 @@
         [data-theme="light"] .theme-toggle-btn .fa-sun { display: block; }
         [data-theme="light"] .theme-toggle-btn .fa-moon { display: none; }
 
-        /* WIDGET JAM OTOMATIS: SEKARANG DISET DI TENGAH */
         .live-clock-widget {
             display: flex;
             align-items: center;
@@ -104,7 +103,7 @@
             font-size: 0.78rem;
             color: var(--text-muted);
             font-weight: 600;
-            margin: 0 auto; /* Membuat posisi horizontal tepat di tengah */
+            margin: 0 auto;
             letter-spacing: 0.3px;
             width: auto;
             max-width: max-content;
@@ -167,10 +166,9 @@
         .left-side, .right-side {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Jeda aman antar komponen widget internal */
+            gap: 20px;
         }
 
-        /* WIDGET ALUR PROSEDUR LANGKAH */
         .step-flow-container {
             background: var(--widget-bg);
             border: 1px solid var(--border-color);
@@ -192,7 +190,6 @@
         .step-item.done .step-number { background: #10b981; border-color: #10b981; color: white; }
         .step-item.done { color: #10b981; }
 
-        /* WIDGET CATATAN UNDUH & JAMINAN PRIVASI */
         .app-note-widget {
             background: rgba(245, 158, 11, 0.03);
             border: 1px dashed rgba(245, 158, 11, 0.2);
@@ -228,7 +225,6 @@
         .form-group textarea { resize: none; height: 65px; }
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
 
-        /* INTEGRASI 2 TOMBOL UTAMA */
         .btn-dual-container { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
         .action-main-btn {
             width: 100%; border: none; padding: 14px; border-radius: 12px; font-weight: 600;
@@ -251,7 +247,7 @@
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-box {
-            background: #ffffff; color: #000; width: 92%; max-width: 620px; height: 80vh;
+            background: #ffffff; color: #000; width: 92%; max-width: 650px; height: 80vh;
             border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
             transform: scale(0.95); transition: transform 0.3s ease;
         }
@@ -260,7 +256,7 @@
         .modal-header h3 { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
         .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b; }
         .modal-body { flex-grow: 1; overflow-y: auto; background: #f1f5f9; padding: 16px; display: flex; justify-content: center; }
-        .modal-footer { background: #f8fafc; padding: 14px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
+        .modal-footer { background: #f8fafc; padding: 14px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
 
         #canvas-preview-holder { width: 100%; max-width: 595px; background: white; }
 
@@ -277,7 +273,6 @@
         .pdf-sign-box { text-align: center; width: 220px; font-size: 12.5px; }
         .pdf-sign-line { border-top: 1.5px solid #0f172a; margin-top: 70px; padding-top: 5px; font-weight: 700; text-transform: uppercase; }
 
-        /* RESPONSIVE LAYOUT UNTUK DESKTOP / WEB MONITOR */
         @media (min-width: 768px) {
             body { padding: 30px; }
             .card { max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; row-gap: 24px; padding: 36px; border-radius: 28px; }
@@ -384,6 +379,7 @@
     <div class="footer">© <span id="copyrightYear">2026</span> Muhammad Avie Sienna.</div>
 </div>
 
+<!-- MODAL PREVIEW YANG SAMA DENGAN image_184962.png -->
 <div class="modal-overlay" id="previewModal">
     <div class="modal-box">
         <div class="modal-header">
@@ -393,6 +389,8 @@
         <div class="modal-body"><div id="canvas-preview-holder"></div></div>
         <div class="modal-footer">
             <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#e2e8f0; color:#475569; cursor:pointer;" onclick="tutupPratinjauModal()">Kembali</button>
+            <!-- TOMBOL CETAK LANGSUNG BARU -->
+            <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#2563eb; color:white; cursor:pointer;" onclick="eksekusiCetakPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
             <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#10b981; color:white; cursor:pointer;" onclick="eksekusiUnduhPDF()"><i class="fa-solid fa-download"></i> Unduh Berkas PDF</button>
         </div>
     </div>
@@ -430,11 +428,8 @@
     let globalCanvasCache = null;
     let globalClientName = "";
 
-    // Deteksi Cerdas Zona Waktu Berdasarkan String Input Kota Manual atau System Timezone Offset
     function hitungZonaWaktuDinamis() {
         const inputKota = document.getElementById('userCityInput').value.trim().toLowerCase();
-        
-        // 1. Cek bypass input kata kunci manual terlebih dahulu
         if (inputKota.includes("jakarta") || inputKota.includes("bandung") || inputKota.includes("surabaya") || inputKota.includes("semarang") || inputKota.includes("medan") || inputKota.includes("palembang") || inputKota.includes("jogja") || inputKota.includes("wib")) {
             return "WIB";
         }
@@ -444,33 +439,27 @@
         if (inputKota.includes("jayapura") || inputKota.includes("ambon") || inputKota.includes("sorong") || inputKota.includes("merauke") || inputKota.includes("wit")) {
             return "WIT";
         }
-
-        // 2. Jika tidak ada kecocokan teks manual, kembalikan ke default offset sistem browser pengguna
         const offsetMenit = new Date().getTimezoneOffset();
         if (offsetMenit === -420) return "WIB"; 
         if (offsetMenit === -480) return "WITA"; 
         if (offsetMenit === -540) return "WIT";
-        
-        return "WITA"; // Default fallback wilayah Anda
+        return "WITA";
     }
 
     function perbaruiJamWidget() {
         const skrg = new Date();
         const hariArr = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         const blnArr = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        
-        // Membaca zona waktu dinamis yang terpengaruh input kota manual
         const zonaAktif = hitungZonaWaktuDinamis();
-        
-        document.getElementById('liveDateTime').textContent = `${hariArr[skrg.getDay()]} , ${skrg.getDate()} ${blnArr[skrg.getMonth()]} 2026 • ${String(skrg.getHours()).padStart(2,'0')}:${String(skrg.getMinutes()).padStart(2,'0')}:${String(skrg.getSeconds()).padStart(2,'0')} ${zonaAktif}`;
+        document.getElementById('liveDateTime').textContent = `${hariArr[skrg.getDay()]} , ${skrg.getDate()} ${blnArr[skrg.getMonth()]} ${skrg.getFullYear()} • ${String(skrg.getHours()).padStart(2,'0')}:${String(skrg.getMinutes()).padStart(2,'0')}:${String(skrg.getSeconds()).padStart(2,'0')} ${zonaAktif}`;
     }
     setInterval(perbaruiJamWidget, 1000);
 
-    // Set Batasan Hari Minimum Tahun 2026
-    const tglSistem = `2026-${String(new Date().getMonth() + 1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}`;
-    document.getElementById('meetDate').value = tglSistem; document.getElementById('meetDate').min = tglSistem;
+    const skrgUntukMin = new Date();
+    const tglSistem = `${skrgUntukMin.getFullYear()}-${String(skrgUntukMin.getMonth() + 1).padStart(2,'0')}-${String(skrgUntukMin.getDate()).padStart(2,'0')}`;
+    document.getElementById('meetDate').value = tglSistem; 
+    document.getElementById('meetDate').min = tglSistem;
 
-    // Ambil Geolocation GPS saat muat halaman pertama kali
     window.addEventListener('load', () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (p) => {
@@ -520,7 +509,7 @@
         document.getElementById('pdf-tanggal').textContent = `: ${tglRapi}`;
         document.getElementById('pdf-jam').textContent = `: ${jam} ${zonaAktif}`;
         document.getElementById('pdf-keterangan').textContent = `: ${note}`;
-        document.getElementById('pdf-meta-hari-kota').textContent = `${kota}, ${new Date().getDate()} ${blnList[new Date().getMonth()]} 2026`;
+        document.getElementById('pdf-meta-hari-kota').textContent = `${kota}, ${new Date().getDate()} ${blnList[new Date().getMonth()]} ${new Date().getFullYear()}`;
 
         return { nama, kota, tglRapi, jam, note, zonaAktif };
     }
@@ -542,7 +531,6 @@
         teks += `Berkas administrasi berupa Surat Konfirmasi Janji Temu saat ini sedang saya tinjau dalam sistem pratinjau aplikasi dan akan segera saya cetak dan saya bawa saat pertemuan sebagai lampiran bukti fisik kehadiran. Mohon konfirmasi ketersediaan waktu Bapak, terima kasih banyak atas perhatiannya.`;
 
         window.open(`https://wa.me/${WA_NOMOR_TUJUAN}?text=${encodeURIComponent(teks)}`, '_blank');
-
         setTimeout(() => { bukaPratinjauPDF(); }, 1000);
     }
 
@@ -560,6 +548,21 @@
 
     function tutupPratinjauModal() { document.getElementById('previewModal').classList.remove('active'); }
 
+    // FUNGSI UTK LANGKAH CETAK PDF SEARA LANGSUNG
+    function eksekusiCetakPDF() {
+        if(!globalCanvasCache) return;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+        doc.addImage(globalCanvasCache.toDataURL('image/png'), 'PNG', 0, 0, 210, (globalCanvasCache.height * 210) / globalCanvasCache.width);
+        
+        // Membuka berkas blob pada tab baru dan langsung memicu perintah printer sistem browser
+        doc.autoPrint();
+        window.open(doc.output('bloburl'), '_blank');
+        
+        document.getElementById('step3').className = "step-item done";
+        tutupPratinjauModal();
+    }
+
     function eksekusiUnduhPDF() {
         if(!globalCanvasCache) return;
         const { jsPDF } = window.jspdf;
@@ -575,8 +578,6 @@
         document.documentElement.setAttribute('data-theme', t);
     }
     document.documentElement.setAttribute('data-theme', 'dark');
-
-    // Otomatis memperbarui tahun copyright sesuai tahun berjalan di perangkat pengguna
     document.getElementById('copyrightYear').textContent = new Date().getFullYear();
 </script>
 
