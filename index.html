@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muhammad Avie Sienna | Contact & Appointment</title>
+    <title>Muhammad Avie Sienna | Contact & Appointment Official</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Library Render & Cetak PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
-        /* VARIABEL WARNA (DEFAULT: MODE GELAP) */
+        /* VARIABEL WARNA ELEGAN */
         :root {
             --accent: #2563eb;
             --accent-hover: #1d4ed8;
@@ -20,14 +25,13 @@
             --widget-bg: rgba(255, 255, 255, 0.03);
         }
 
-        /* VARIABEL WARNA (MODE TERANG) */
         [data-theme="light"] {
             --bg-gradient: radial-gradient(circle at 50% 50%, #f1f5f9 0%, #e2e8f0 100%);
-            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.85);
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: rgba(15, 23, 42, 0.08);
-            --input-bg: rgba(255, 255, 255, 0.9);
+            --input-bg: rgba(255, 255, 255, 0.95);
             --widget-bg: rgba(15, 23, 42, 0.04);
         }
 
@@ -46,33 +50,31 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 12px;
         }
 
-        /* Container Utama */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-radius: 28px;
+            border-radius: 24px;
             width: 100%;
             max-width: 440px;
             border: 1px solid var(--border-color);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            padding: 30px 24px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 16px;
             position: relative;
         }
 
-        /* Tombol Toggle Mode Gelap / Terang */
         .theme-toggle-btn {
             position: absolute;
-            top: 24px;
-            right: 24px;
-            width: 40px;
-            height: 40px;
+            top: 20px;
+            right: 20px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: var(--widget-bg);
             border: 1px solid var(--border-color);
@@ -81,21 +83,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             z-index: 10;
         }
-        .theme-toggle-btn:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        /* Ikon Bulan/Matahari Otomatis Sembunyi Sesuai Mode */
+        .theme-toggle-btn:hover { border-color: var(--accent); transform: scale(1.05); }
         .theme-toggle-btn .fa-sun { display: none; color: #f59e0b; }
         .theme-toggle-btn .fa-moon { display: block; }
         [data-theme="light"] .theme-toggle-btn .fa-sun { display: block; }
         [data-theme="light"] .theme-toggle-btn .fa-moon { display: none; }
 
-        /* Widget Live Date & Time */
+        /* WIDGET JAM OTOMATIS DI MENTOK TENGAH ATAS */
         .live-clock-widget {
             display: flex;
             align-items: center;
@@ -103,34 +100,23 @@
             gap: 8px;
             background: var(--widget-bg);
             border: 1px solid var(--border-color);
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 30px;
             font-size: 0.75rem;
             color: var(--text-muted);
-            font-weight: 500;
-            align-self: center;
-            letter-spacing: 0.5px;
-            margin-right: 45px; /* Memberi ruang agar tidak tabrakan dengan tombol tema di mobile */
-        }
-        .live-clock-widget i {
-            color: var(--accent);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-
-        /* Profile Section */
-        .profile {
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            width: 100%;
+            margin: 0 auto;
             text-align: center;
         }
+        .live-clock-widget i { color: var(--accent); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
+        .profile { text-align: center; margin-top: 8px; }
         .profile-img {
-            width: 100px;
-            height: 100px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             border: 3px solid var(--accent);
             padding: 4px;
@@ -139,368 +125,447 @@
             box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
         }
 
-        h1 { font-size: 1.4rem; margin: 16px 0 6px 0; font-weight: 700; letter-spacing: -0.5px; }
-        .subtitle { color: var(--accent); font-weight: 600; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        h1 { font-size: 1.3rem; margin: 10px 0 4px 0; font-weight: 700; letter-spacing: -0.5px; }
+        .subtitle { color: var(--accent); font-weight: 600; font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; }
 
-        /* Sektor Judul Blok */
         .section-title {
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        /* List Kontak Sosial */
-        .contact-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 14px 18px;
-            background: var(--input-bg);
-            border-radius: 14px;
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 500;
-            font-size: 0.95rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .contact-item:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            background: rgba(37, 99, 235, 0.08);
-        }
-
-        .contact-item span { flex-grow: 1; }
-
-        /* Pewarnaan Ikon Kontak */
-        .contact-item i.fa-whatsapp { color: #22c55e; font-size: 1.25rem; }
-        .contact-item i.fa-instagram { 
-            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 1.25rem;
-        }
-        .contact-item i.fa-envelope { color: #ef4444; font-size: 1.15rem; }
-        .contact-item i.fa-arrow-up-right-from-square { color: var(--text-muted); font-size: 0.8rem; opacity: 0.7; }
-
-        /* Form Janji Temu */
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
             gap: 6px;
         }
 
-        .form-group label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            padding-left: 2px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            font-size: 0.95rem;
-            font-family: inherit;
-        }
-
-        /* Penyesuaian ikon kalender/jam bawaan browser pada mode terang */
-        [data-theme="light"] input[type="date"], [data-theme="light"] input[type="time"] {
-            color-scheme: light;
-        }
-        input[type="date"], input[type="time"] {
-            color-scheme: dark;
-        }
-
-        .form-group textarea {
-            resize: none;
-            height: 80px;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-
-        .form-group label span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            opacity: 0.6;
-            font-weight: 400;
-            margin-left: 4px;
-        }
-
-        /* Tombol Submit Kirim WA */
-        .submit-btn {
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
+        .contact-list { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .contact-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
-            margin-top: 6px;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.88rem;
+            border: 1px solid var(--border-color);
         }
-
-        .submit-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
+        .contact-item:hover { border-color: var(--accent); transform: translateY(-1px); background: rgba(37, 99, 235, 0.05); }
+        .contact-item span { flex-grow: 1; }
+        .contact-item i.fa-whatsapp { color: #22c55e; font-size: 1.15rem; }
+        .contact-item i.fa-instagram { 
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.15rem;
         }
+        .contact-item i.fa-envelope { color: #ef4444; font-size: 1.05rem; }
 
-        .footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 10px;
+        /* WIDGET ALUR PROSEDUR LANGKAH */
+        .step-flow-container {
+            background: var(--widget-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
+        .step-item { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; color: var(--text-muted); }
+        .step-number {
+            width: 18px; height: 18px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.65rem; color: var(--text-muted);
+        }
+        .step-item.active .step-number { background: var(--accent); border-color: var(--accent); color: white; }
+        .step-item.active { color: var(--text-main); font-weight: 600; }
+        .step-item.done .step-number { background: #10b981; border-color: #10b981; color: white; }
+        .step-item.done { color: #10b981; }
 
-        /* MEDIA QUERY: TAMPILAN DESKTOP */
+        /* WIDGET CATATAN UNDUH & JAMINAN PRIVASI */
+        .app-note-widget {
+            background: rgba(245, 158, 11, 0.03);
+            border: 1px dashed rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex; gap: 10px;
+        }
+        .app-note-widget i { color: #f59e0b; font-size: 0.95rem; margin-top: 2px; }
+        .app-note-widget div { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
+        .app-note-widget strong { color: var(--text-main); display: block; margin-bottom: 2px; }
+
+        .security-widget {
+            background: rgba(16, 185, 129, 0.03);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex; gap: 10px;
+        }
+        .security-widget i { color: #10b981; font-size: 0.95rem; margin-top: 2px; }
+        .security-widget div { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
+        .security-widget strong { color: var(--text-main); display: block; margin-bottom: 2px; }
+
+        .form-container { display: flex; flex-direction: column; gap: 10px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 0.76rem; color: var(--text-muted); font-weight: 600; padding-left: 2px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 11px; border-radius: 10px;
+            background: var(--input-bg); border: 1px solid var(--border-color);
+            color: var(--text-main); font-size: 0.88rem; font-family: inherit;
+        }
+        input[type="date"], input[type="time"] { color-scheme: dark; }
+        [data-theme="light"] input[type="date"], [data-theme="light"] input[type="time"] { color-scheme: light; }
+        .form-group textarea { resize: none; height: 60px; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
+
+        /* 2 TOMBOL UTAMA */
+        .btn-dual-container { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+        .action-main-btn {
+            width: 100%; border: none; padding: 13px; border-radius: 12px; font-weight: 600;
+            font-size: 0.86rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            color: white; transition: all 0.2s ease;
+        }
+        .btn-submit-wa { background: #2563eb; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); }
+        .btn-submit-wa:hover { background: #1d4ed8; }
+        .btn-preview-pdf { background: #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15); }
+        .btn-preview-pdf:hover { background: #059669; }
+
+        .footer { text-align: center; font-size: 0.72rem; color: var(--text-muted); }
+
+        /* SYSTEM MODAL PREVIEW */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: #ffffff; color: #000; width: 92%; max-width: 620px; height: 80vh;
+            border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-header { background: #f8fafc; padding: 14px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
+        .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b; }
+        .modal-body { flex-grow: 1; overflow-y: auto; background: #f1f5f9; padding: 16px; display: flex; justify-content: center; }
+        .modal-footer { background: #f8fafc; padding: 14px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px; }
+
+        #canvas-preview-holder { width: 100%; max-width: 595px; background: white; }
+
+        /* STRUKTUR BERKAS INTERNAL DOKUMEN PDF */
+        #pdf-template {
+            position: absolute; left: -9999px; top: -9999px;
+            width: 595px; background: #ffffff; color: #1e293b; padding: 50px; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .pdf-header { text-align: center; border-bottom: 3px double #0f172a; padding-bottom: 10px; margin-bottom: 25px; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .pdf-table td { padding: 9px 6px; border-bottom: 1px solid #e2e8f0; font-size: 12.5px; vertical-align: top; }
+        .pdf-table td.label { width: 35%; color: #475569; font-weight: 600; }
+        .pdf-signature-container { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; }
+        .pdf-sign-box { text-align: center; width: 220px; font-size: 12.5px; }
+        .pdf-sign-line { border-top: 1.5px solid #0f172a; margin-top: 70px; padding-top: 5px; font-weight: 700; text-transform: uppercase; }
+
+        /* RESPONSIVE LAYOUT MONITORS DESKTOP */
         @media (min-width: 768px) {
-            .card {
-                max-width: 840px;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                column-gap: 40px;
-                row-gap: 20px;
-                padding: 45px 40px;
-            }
-
-            .live-clock-widget {
-                grid-column: span 2;
-                margin-bottom: 5px;
-                margin-right: 0; /* Reset margin kanan pada desktop */
-            }
-
-            .left-side {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                gap: 30px;
-            }
-
-            .right-side {
-                border-left: 1px solid var(--border-color);
-                padding-left: 40px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-
-            .footer {
-                grid-column: span 2;
-                margin-top: 15px;
-                border-top: 1px solid var(--border-color);
-                padding-top: 15px;
-            }
-            
-            .profile h1 { font-size: 1.6rem; }
+            body { padding: 24px; }
+            .card { max-width: 860px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; padding: 32px; border-radius: 28px; }
+            .live-clock-widget { grid-column: span 2; }
+            .left-side { display: flex; flex-direction: column; gap: 16px; justify-content: flex-start; }
+            .right-side { border-left: 1px solid var(--border-color); padding-left: 32px; display: flex; flex-direction: column; justify-content: center; }
+            .footer { grid-column: span 2; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 6px; }
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Ubah Mode Tema">
-        <i class="fa-solid fa-moon"></i>
-        <i class="fa-solid fa-sun"></i>
-    </button>
+    <button class="theme-toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i><i class="fa-solid fa-sun"></i></button>
     
+    <!-- LOKASI GPS & JAM OTOMATIS TENGAH ATAS -->
     <div class="live-clock-widget">
-        <i class="fa-solid fa-circle"></i>
-        <span id="liveDateTime">Memuat Waktu...</span>
+        <i class="fa-solid fa-circle"></i><span id="liveDateTime">Sinkronisasi Waktu...</span>
     </div>
 
+    <!-- PANEL SISI KIRI: PROFIL, ALUR, CATATAN DAN PRIVASI -->
     <div class="left-side">
         <div class="profile">
             <img src="https://lh3.googleusercontent.com/d/1maGet0jkFl4I76lxKVH9FZLNj9h22usX" alt="Muhammad Avie Sienna" class="profile-img">
             <h1>Muhammad Avie Sienna</h1>
-            <div class="subtitle">INFORMASI KONTAK DAN JANJI TAMU</div>
+            <div class="subtitle">INFORMASI KONTAK & RESERVASI JADWAL</div>
         </div>
 
         <div>
-            <div class="section-title">
-                <i class="fa-solid fa-id-card"></i> Hubungi Saya
-            </div>
+            <div class="section-title">Hubungi Saya</div>
             <div class="contact-list">
                 <a href="https://wa.me/6285245867094" target="_blank" class="contact-item">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    <span>WhatsApp Resmi</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <i class="fa-brands fa-whatsapp"></i><span>WhatsApp Resmi</span>
                 </a>
                 <a href="https://instagram.com/avieesiennaa_" target="_blank" class="contact-item">
-                    <i class="fa-brands fa-instagram"></i>
-                    <span>Instagram</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <i class="fa-brands fa-instagram"></i><span>Instagram</span>
                 </a>
-                <a href="mailto:muhammadaviesiena@gmail.com" class="contact-item">
-                    <i class="fa-solid fa-envelope"></i>
-                    <span>Email</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <a href="mailto:muhammadaviesienna.business@gmail.com" class="contact-item">
+                    <i class="fa-solid fa-envelope"></i><span>Email Bisnis</span>
                 </a>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">Alur Prosedur Janji</div>
+            <div class="step-flow-container">
+                <div class="step-item active" id="step1"><div class="step-number">1</div> Lengkapi Formulir Data</div>
+                <div class="step-item" id="step2"><div class="step-number">2</div> Ajukan Slot Pertemuan via WA</div>
+                <div class="step-item" id="step3"><div class="step-number">3</div> Selesai / Simpan Berkas Konfirmasi</div>
+            </div>
+        </div>
+
+        <div class="app-note-widget">
+            <i class="fa-solid fa-lightbulb"></i>
+            <div>
+                <strong>Catatan :</strong>
+                Silakan unduh dan cetak berkas konfirmasi sesaat setelah menekan tombol ajukan permohonan sebagai bukti cetak otentik janji temu Anda.
+            </div>
+        </div>
+
+        <div class="security-widget">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+                <strong>Jaminan Keamanan Data:</strong>
+                Seluruh data identitas pemohon dijamin aman secara profesional, bersifat rahasia, dan terproteksi penuh dari pihak ketiga.
             </div>
         </div>
     </div>
 
+    <!-- PANEL SISI KANAN: FORM -->
     <div class="right-side">
-        <div class="section-title">
-            <i class="fa-regular fa-calendar-plus"></i> Buat Janji Temu
-        </div>
+        <div class="section-title">Isi Jadwal Rencana Pertemuan</div>
         
         <div class="form-container">
             <div class="form-group">
-                <label for="clientName">Nama Lengkap</label>
-                <input type="text" id="clientName" placeholder="Masukkan nama Anda" autocomplete="off">
+                <label for="clientName">Nama Lengkap Pemohon</label>
+                <input type="text" id="clientName" placeholder="Ketik nama lengkap Anda" oninput="cekStatusInput()">
             </div>
-
             <div class="form-group">
-                <label for="meetDate">Pilih Tanggal Pertemuan</label>
+                <label for="userCityInput">Lokasi Kota Anda (GPS)</label>
+                <!-- Menambahkan Event Listener oninput agar saat kota diubah manual, Zona Waktu Jam Atas langsung berubah -->
+                <input type="text" id="userCityInput" placeholder="Mencari titik koordinat..." oninput="perbaruiJamWidget()">
+            </div>
+            <div class="form-group">
+                <label for="meetDate">Pilih Tanggal</label>
                 <input type="date" id="meetDate">
             </div>
-
             <div class="form-group">
-                <label for="meetTime">Pilih Jam Pertemuan</label>
+                <label for="meetTime">Pilih Jam</label>
                 <input type="time" id="meetTime">
             </div>
-
             <div class="form-group">
-                <label for="meetNote">Keterangan Tambahan <span>(Opsional)</span></label>
-                <textarea id="meetNote" placeholder="Tulis catatan atau topik yang ingin dibahas (contoh: Bahas rencana asuransi, lokasi bertemu, dll)..."></textarea>
+                <label for="meetNote">Keterangan Tambahan (Opsional)</label>
+                <textarea id="meetNote" placeholder="Tulis pokok atau agenda bahasan pertemuan secara ringkas..."></textarea>
             </div>
 
-            <button class="submit-btn" onclick="kirimJanjiTemuWA()">
-                <i class="fa-regular fa-calendar-check"></i> Ajukan Jadwal via WA
-            </button>
+            <!-- DUA TOMBOL UTAMA -->
+            <div class="btn-dual-container">
+                <button class="action-main-btn btn-submit-wa" onclick="jalankanProsedurAjukanWA()">
+                    <i class="fa-brands fa-whatsapp"></i> 1. Ajukan Pertemuan ke WA
+                </button>
+                <button class="action-main-btn btn-preview-pdf" onclick="bukaPratinjauPDF()">
+                    <i class="fa-solid fa-file-pdf"></i> 2. Pratinjau & Cetak PDF
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="footer">
-        © <span id="year"></span> Muhammad Avie Sienna
+    <div class="footer">© 2026 Muhammad Avie Sienna. All Rights Reserved.</div>
+</div>
+
+<!-- CONTAINER MODAL PREVIEW PDF -->
+<div class="modal-overlay" id="previewModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Pratinjau Surat Konfirmasi Janji Temu</h3>
+            <button class="modal-close" onclick="tutupPratinjauModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body"><div id="canvas-preview-holder"></div></div>
+        <div class="modal-footer">
+            <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#e2e8f0; color:#475569; cursor:pointer;" onclick="tutupPratinjauModal()">Kembali</button>
+            <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#10b981; color:white; cursor:pointer;" onclick="eksekusiUnduhPDF()"><i class="fa-solid fa-download"></i> Unduh Berkas PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- TEMPLATE INTERNAL PDF -->
+<div id="pdf-template">
+    <div class="pdf-header">
+        <h2 style="font-size: 21px; font-weight:700;">MUHAMMAD AVIE SIENNA</h2>
+        <p style="font-size: 10px; font-weight:600; text-transform:uppercase; color:#475569; letter-spacing:1px; margin-top:4px;">Surat Konfirmasi Pengajuan Janji Temu / Appointment</p>
+    </div>
+    <div class="pdf-body">
+        <h3 style="font-size: 12.5px; border-bottom: 1px solid #0f172a; padding-bottom: 5px; margin-bottom: 16px; font-weight:700;">DETAIL DATA PENGAJUAN</h3>
+        <table class="pdf-table">
+            <tr><td class="label">Nama Pemohon</td><td id="pdf-nama">: -</td></tr>
+            <tr><td class="label">Asal Kota</td><td id="pdf-kota">: -</td></tr>
+            <tr><td class="label">Tanggal Pertemuan</td><td id="pdf-tanggal">: -</td></tr>
+            <tr><td class="label">Waktu / Jam</td><td id="pdf-jam">: -</td></tr>
+            <tr><td class="label">Pokok Keterangan</td><td id="pdf-keterangan">: -</td></tr>
+        </table>
+        <div style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 12px; font-size: 11px; margin-bottom: 25px;">
+            <strong>Catatan :</strong> Silakan simpan dokumen digital ini dengan baik. Berkas ini berfungsi sebagai lembar bukti komitmen koordinasi resmi kehadiran pada jadwal yang telah direncanakan.
+        </div>
+        <div style="font-size: 10px; color:#64748b; text-align:justify; margin-bottom:40px;">
+            <strong>Pernyataan Perlindungan Data:</strong> Dokumen ini dilindungi oleh asas kerahasiaan dan standar jaminan keamanan privasi. Segala data masukan yang terlampir diatur secara ketat dan profesional guna menjaga integritas kedua belah pihak.
+        </div>
+        <div class="pdf-signature-container">
+            <div class="pdf-sign-box"><div>Pemohon,</div><div class="pdf-sign-line" id="pdf-nama-bawah">Nama Pemohon</div></div>
+            <div class="pdf-sign-box"><div id="pdf-meta-hari-kota" style="font-weight: 700; margin-bottom:6px;">Kota, Tanggal</div><div>Mengetahui,</div><div class="pdf-sign-line">MUHAMMAD AVIE SIENNA</div></div>
+        </div>
     </div>
 </div>
 
 <script>
-    // MANAGEMENT TEMA (GELAP/TERANG) + MEMORY STORAGE
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
+    const WA_NOMOR_TUJUAN = "6285245867094";
+    let globalCanvasCache = null;
+    let globalClientName = "";
 
-    function toggleTheme() {
-        let theme = document.documentElement.getAttribute('data-theme');
-        let newTheme = (theme === 'dark') ? 'light' : 'dark';
+    // Deteksi cerdas Zona Waktu Indonesia berdasarkan teks Kota yang diinput manual
+    function dapatkanZonaWaktuLokal() {
+        const kotaInput = document.getElementById('userCityInput')?.value.toLowerCase().trim() || "";
         
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        // Pemetaan Kata Kunci Wilayah Indonesia Timur (WIT)
+        const keywordWIT = ["maluku", "ambon", "papua", "jayapura", "sorong", "merauke", "ternate", "manokwari", "biak"];
+        // Pemetaan Kata Kunci Wilayah Indonesia Tengah (WITA)
+        const keywordWITA = ["bali", "denpasar", "lombok", "mataram", "kupang", "ntt", "ntb", "makassar", "ujung pandang", "manado", "palu", "kendari", "gorontalo", "bitung", "banjarmasin", "balikpapan", "samarinda", "pontianak", "palangkaraya", "tarakan", "kaltim", "kalsel", "kalteng", "kalut", "sulawesi"];
+        // Pemetaan Kata Kunci Wilayah Indonesia Barat (WIB)
+        const keywordWIB = ["jakarta", "bogor", "depok", "tangerang", "bekasi", "jabodetabek", "bandung", "semarang", "yogyakarta", "jogja", "surabaya", "malang", "solo", "surakarta", "medan", "palembang", "padang", "aceh", "pekanbaru", "riau", "jambi", "bengkulu", "lampung", "bangka", "belitung", "batam", "pontianak", "kalbar", "jawa", "sumatera"];
+
+        if (keywordWIT.some(k => kotaInput.includes(k))) return "WIT";
+        if (keywordWITA.some(k => kotaInput.includes(k))) return "WITA";
+        if (keywordWIB.some(k => kotaInput.includes(k))) return "WIB";
+
+        // Fallback default berdasarkan offset sistem bawaan browser jika tidak ada keyword yang cocok
+        const mnt = new Date().getTimezoneOffset();
+        if (mnt === -420) return "WIB";
+        if (mnt === -480) return "WITA";
+        if (mnt === -540) return "WIT";
+        return "WITA";
     }
 
-    // Fungsi Update Jam dan Tanggal Real-Time
-    function updateLiveClock() {
-        const sekarang = new Date();
-        const hariList = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        const bulanList = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    function perbaruiJamWidget() {
+        const skrg = new Date();
+        const hariArr = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const blnArr = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         
-        const namaHari = hariList[sekarang.getDay()];
-        const tanggal = sekarang.getDate();
-        const namaBulan = bulanList[sekarang.getMonth()];
-        const tahun = sekarang.getFullYear();
-        
-        let jam = sekarang.getHours();
-        let menit = sekarang.getMinutes();
-        let detik = Thermal = sekarang.getSeconds();
-        
-        jam = jam < 10 ? '0' + jam : jam;
-        menit = menit < 10 ? '0' + menit : menit;
-        detik = detik < 10 ? '0' + detik : detik;
-        
-        const formatTeks = `${namaHari}, ${tanggal} ${namaBulan} ${tahun} • ${jam}:${menit}:${detik}`;
-        document.getElementById('liveDateTime').textContent = formatTeks;
+        // Format jam tetap sinkron real-time
+        document.getElementById('liveDateTime').textContent = `${hariArr[skrg.getDay()]}, ${skrg.getDate()} ${blnArr[skrg.getMonth()]} 2026 • ${String(skrg.getHours()).padStart(2,'0')}:${String(skrg.getMinutes()).padStart(2,'0')}:${String(skrg.getSeconds()).padStart(2,'0')} ${dapatkanZonaWaktuLokal()}`;
+    }
+    setInterval(perbaruiJamWidget, 1000);
+
+    // Set Default Batasan Hari di Tahun 2026
+    const tglSistem = `2026-${String(new Date().getMonth() + 1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}`;
+    document.getElementById('meetDate').value = tglSistem; document.getElementById('meetDate').min = tglSistem;
+
+    // Deteksi Lokasi Otomatis via GPS saat awal load
+    window.addEventListener('load', () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (p) => {
+                try {
+                    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.coords.latitude}&lon=${p.coords.longitude}`);
+                    const d = await r.json();
+                    const k = d.address.city || d.address.town || d.address.state_district || "Banjarmasin";
+                    document.getElementById('userCityInput').value = k.replace("Kota ", "").replace("Kabupaten ", "");
+                } catch(e) { document.getElementById('userCityInput').value = "Banjarmasin"; }
+                perbaruiJamWidget();
+            }, () => { 
+                document.getElementById('userCityInput').value = "Banjarmasin"; 
+                perbaruiJamWidget();
+            });
+        } else { 
+            document.getElementById('userCityInput').value = "Banjarmasin"; 
+            perbaruiJamWidget();
+        }
+    });
+
+    function cekStatusInput() {
+        const n = document.getElementById('clientName').value.trim();
+        document.getElementById('step1').className = n.length > 0 ? "step-item done" : "step-item active";
+        document.getElementById('step2').className = n.length > 0 ? "step-item active" : "step-item";
     }
 
-    updateLiveClock();
-    setInterval(updateLiveClock, 1000);
+    function ambilSapaanWaktu() {
+        const jam = new Date().getHours();
+        if (jam >= 4 && jam < 11) return "Pagi";
+        if (jam >= 11 && jam < 15) return "Siang";
+        if (jam >= 15 && jam < 18) return "Sore";
+        return "Malam";
+    }
 
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Set Minimal Input Tanggal Berlaku Hari Ini
-    const hariIni = new Date();
-    const yyyy = hariIni.getFullYear();
-    let mm = hariIni.getMonth() + 1; 
-    let dd = hariIni.getDate();
-
-    if (mm < 10) mm = '0' + mm;
-    if (dd < 10) dd = '0' + dd;
-
-    const formatHariIni = yyyy + '-' + mm + '-' + dd;
-    const inputTanggal = document.getElementById('meetDate');
-    
-    inputTanggal.min = formatHariIni; 
-    inputTanggal.value = formatHariIni; 
-
-    // Fungsi Pengiriman Data Form ke WhatsApp
-    function kirimJanjiTemuWA() {
+    function susunKomponenTemplate() {
         const nama = document.getElementById('clientName').value.trim();
-        const tanggal = document.getElementById('meetDate').value;
+        const kota = document.getElementById('userCityInput').value.trim() || "Banjarmasin";
+        const tgl = document.getElementById('meetDate').value;
         const jam = document.getElementById('meetTime').value;
-        const keterangan = document.getElementById('meetNote').value.trim();
-        const nomorWA = "6285245867094";
+        const note = document.getElementById('meetNote').value.trim() || "-";
 
-        if (!nama) {
-            alert("Silakan masukkan nama Anda terlebih dahulu.");
-            return;
-        }
-        if (!tanggal || !jam) {
-            alert("Silakan pilih tanggal dan jam janji temu.");
-            return;
-        }
+        if(!nama || !tgl || !jam) { alert("Harap lengkapi Nama, Tanggal, dan Waktu janji temu."); return false; }
+        globalClientName = nama;
 
-        const parts = tanggal.split('-');
-        const tanggalFormatIndo = `${parts[2]}/${parts[1]}/${parts[0]}`;
+        const p = tgl.split('-');
+        const blnList = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const tglRapi = `${p[2]}/${p[1]}/${p[0]}`;
 
-        let isiPesan = `Halo Pak *Muhammad Avie Sienna*,\nSaya *${nama}* ingin mengajukan janji temu.\n\n` +
-                       `📅 *Tanggal:* ${tanggalFormatIndo}\n` +
-                       `⏰ *Jam:* ${jam} WIB`;
+        document.getElementById('pdf-nama').innerHTML = `: <strong>${nama}</strong>`;
+        document.getElementById('pdf-nama-bawah').textContent = nama;
+        document.getElementById('pdf-kota').textContent = `: ${kota}`;
+        document.getElementById('pdf-tanggal').textContent = `: ${tglRapi}`;
+        document.getElementById('pdf-jam').textContent = `: ${jam} ${dapatkanZonaWaktuLokal()}`;
+        document.getElementById('pdf-keterangan').textContent = `: ${note}`;
+        document.getElementById('pdf-meta-hari-kota').textContent = `${kota}, ${new Date().getDate()} ${blnList[new Date().getMonth()]} 2026`;
 
-        if (keterangan) {
-            isiPesan += `\n📝 *Keterangan:* ${keterangan}`;
-        }
+        return { nama, kota, tglRapi, jam, note };
+    }
 
-        isiPesan += `\n\nApakah jadwal tersebut kosong? Terima kasih.`;
+    function jalankanProsedurAjukanWA() {
+        const data = susunKomponenTemplate();
+        if(!data) return;
 
-        const encodedText = encodeURIComponent(isiPesan);
-        const urlWhatsApp = `https://wa.me/${nomorWA}?text=${encodedText}`;
+        document.getElementById('step2').className = "step-item done";
+        document.getElementById('step3').className = "step-item active";
 
-        window.open(urlWhatsApp, '_blank');
+        const sapaan = ambilSapaanWaktu();
+        let teks = `Yth. Bapak *Muhammad Avie Sienna*,\n\n`;
+        teks += `Selamat ${sapaan} Pak, saya *${data.nama}*. Melalui tautan ini, saya bermaksud untuk mengajukan permohonan koordinasi waktu janji temu langsung bersama Bapak.\n\n`;
+        teks += `Adapun rincian jadwal yang saya persiapkan dari *${data.kota}*:\n`;
+        teks += `📅 Hari/Tanggal: *${data.tglRapi}*\n`;
+        teks += `⏰ Waktu/Jam: *${data.jam} ${dapatkanZonaWaktuLokal()}*\n`;
+        teks += `📝 Pokok Agenda: *${data.note}*\n\n`;
+        teks += `Berkas administrasi berupa Surat Konfirmasi Janji Temu saat ini sedang saya tinjau dalam sistem pratinjau aplikasi dan akan segera saya cetak sebagai lampiran bukti fisik kehadiran. Mohon konfirmasi ketersediaan waktu Bapak, terima kasih banyak atas perhatiannya.`;
+
+        window.open(`https://wa.me/${WA_NOMOR_TUJUAN}?text=${encodeURIComponent(teks)}`, '_blank');
+        setTimeout(() => { bukaPratinjauPDF(); }, 1000);
+    }
+
+    function bukaPratinjauPDF() {
+        if(!susunKomponenTemplate()) return;
+        const box = document.getElementById('canvas-preview-holder');
+        box.innerHTML = "<p style='text-align:center; padding:20px; color:#64748b; font-size:0.85rem;'>Menyusun salinan dokumen resmi...</p>";
+        document.getElementById('previewModal').classList.add('active');
+
+        html2canvas(document.getElementById('pdf-template'), { scale: 2, useCORS: true }).then(canvas => {
+            box.innerHTML = ""; canvas.style.width = "100%"; canvas.style.height = "auto";
+            box.appendChild(canvas); globalCanvasCache = canvas;
+        });
+    }
+
+    function tutupPratinjauModal() { document.getElementById('previewModal').classList.remove('active'); }
+
+    document.documentElement.setAttribute('data-theme', 'dark');
+    function toggleTheme() {
+        let t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
     }
 </script>
-
 </body>
 </html>
