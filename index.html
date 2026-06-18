@@ -353,6 +353,10 @@
                 <input type="text" id="userCityInput" placeholder="Mencari titik koordinat..." oninput="perbaruiJamWidget()">
             </div>
             <div class="form-group">
+                <label for="meetLocation">Tempat / Alamat Pertemuan Lengkap</label>
+                <textarea id="meetLocation" placeholder="Ketik alamat lengkap lokasi pertemuan (cth: Jl. Ahmad Yani No. 12, RT 03/RW 04, Kecamatan Banjarmasin Timur, Kota Banjarmasin, Gedung Menara Sinar Lantai 3)"></textarea>
+            </div>
+            <div class="form-group">
                 <label for="meetDate">Pilih Tanggal</label>
                 <input type="date" id="meetDate">
             </div>
@@ -379,7 +383,6 @@
     <div class="footer">© <span id="copyrightYear">2026</span> Muhammad Avie Sienna.</div>
 </div>
 
-<!-- MODAL PREVIEW YANG SAMA DENGAN image_184962.png -->
 <div class="modal-overlay" id="previewModal">
     <div class="modal-box">
         <div class="modal-header">
@@ -389,7 +392,6 @@
         <div class="modal-body"><div id="canvas-preview-holder"></div></div>
         <div class="modal-footer">
             <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#e2e8f0; color:#475569; cursor:pointer;" onclick="tutupPratinjauModal()">Kembali</button>
-            <!-- TOMBOL CETAK LANGSUNG BARU -->
             <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#2563eb; color:white; cursor:pointer;" onclick="eksekusiCetakPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
             <button style="padding: 10px 14px; border-radius: 8px; font-weight:600; border:none; background:#10b981; color:white; cursor:pointer;" onclick="eksekusiUnduhPDF()"><i class="fa-solid fa-download"></i> Unduh Berkas PDF</button>
         </div>
@@ -406,6 +408,7 @@
         <table class="pdf-table">
             <tr><td class="label">Nama Pemohon</td><td id="pdf-nama">: -</td></tr>
             <tr><td class="label">Asal Kota</td><td id="pdf-kota">: -</td></tr>
+            <tr><td class="label">Alamat Lokasi Pertemuan</td><td id="pdf-lokasi">: -</td></tr>
             <tr><td class="label">Tanggal Pertemuan</td><td id="pdf-tanggal">: -</td></tr>
             <tr><td class="label">Waktu / Jam</td><td id="pdf-jam">: -</td></tr>
             <tr><td class="label">Pokok Keterangan</td><td id="pdf-keterangan">: -</td></tr>
@@ -417,7 +420,7 @@
             <strong>Pernyataan Perlindungan Data:</strong> Dokumen ini dilindungi oleh asas kerahasiaan dan standar jaminan keamanan privasi. Segala data masukan yang terlampir diatur secara ketat dan profesional guna menjaga integritas kedua belah pihak.
         </div>
         <div class="pdf-signature-container">
-            <div class="pdf-sign-box"><div>Pemohon Terkait,</div><div class="pdf-sign-line" id="pdf-nama-bawah">Nama Pemohon</div></div>
+            <div class="pdf-sign-box"><div>Pemohon,</div><div class="pdf-sign-line" id="pdf-nama-bawah">Nama Pemohon</div></div>
             <div class="pdf-sign-box"><div id="pdf-meta-hari-kota" style="font-weight: 700; margin-bottom:6px;">Kota, Tanggal</div><div>Mengetahui,</div><div class="pdf-sign-line">MUHAMMAD AVIE SIENNA</div></div>
         </div>
     </div>
@@ -491,11 +494,12 @@
     function susunKomponenTemplate() {
         const nama = document.getElementById('clientName').value.trim();
         const kota = document.getElementById('userCityInput').value.trim() || "Banjarmasin";
+        const lokasi = document.getElementById('meetLocation').value.trim();
         const tgl = document.getElementById('meetDate').value;
         const jam = document.getElementById('meetTime').value;
         const note = document.getElementById('meetNote').value.trim() || "-";
 
-        if(!nama || !tgl || !jam) { alert("Harap lengkapi Nama, Tanggal, dan Waktu janji temu."); return false; }
+        if(!nama || !lokasi || !tgl || !jam) { alert("Harap lengkapi Nama, Alamat Pertemuan, Tanggal, dan Waktu janji temu."); return false; }
         globalClientName = nama;
 
         const p = tgl.split('-');
@@ -506,12 +510,13 @@
         document.getElementById('pdf-nama').innerHTML = `: <strong>${nama}</strong>`;
         document.getElementById('pdf-nama-bawah').textContent = nama;
         document.getElementById('pdf-kota').textContent = `: ${kota}`;
+        document.getElementById('pdf-lokasi').textContent = `: ${lokasi}`;
         document.getElementById('pdf-tanggal').textContent = `: ${tglRapi}`;
         document.getElementById('pdf-jam').textContent = `: ${jam} ${zonaAktif}`;
         document.getElementById('pdf-keterangan').textContent = `: ${note}`;
         document.getElementById('pdf-meta-hari-kota').textContent = `${kota}, ${new Date().getDate()} ${blnList[new Date().getMonth()]} ${new Date().getFullYear()}`;
 
-        return { nama, kota, tglRapi, jam, note, zonaAktif };
+        return { nama, kota, lokasi, tglRapi, jam, note, zonaAktif };
     }
 
     function jalankanProsedurAjukanWA() {
@@ -527,6 +532,7 @@
         teks += `Adapun detail janji temu, sebagai berikut :\n`;
         teks += `📅 Hari/Tanggal: *${data.tglRapi}*\n`;
         teks += `⏰ Waktu/Jam: *${data.jam} ${data.zonaAktif}*\n`;
+        teks += `📍 Tempat/Alamat Pertemuan: *${data.lokasi}*\n`;
         teks += `📝 Pokok Agenda: *${data.note}*\n\n`;
         teks += `Berkas administrasi berupa Surat Konfirmasi Janji Temu saat ini sedang saya tinjau dalam sistem pratinjau aplikasi dan akan segera saya cetak dan saya bawa saat pertemuan sebagai lampiran bukti fisik kehadiran. Mohon konfirmasi ketersediaan waktu Bapak, terima kasih banyak atas perhatiannya.`;
 
@@ -548,17 +554,13 @@
 
     function tutupPratinjauModal() { document.getElementById('previewModal').classList.remove('active'); }
 
-    // FUNGSI UTK LANGKAH CETAK PDF SEARA LANGSUNG
     function eksekusiCetakPDF() {
         if(!globalCanvasCache) return;
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
         doc.addImage(globalCanvasCache.toDataURL('image/png'), 'PNG', 0, 0, 210, (globalCanvasCache.height * 210) / globalCanvasCache.width);
-        
-        // Membuka berkas blob pada tab baru dan langsung memicu perintah printer sistem browser
         doc.autoPrint();
         window.open(doc.output('bloburl'), '_blank');
-        
         document.getElementById('step3').className = "step-item done";
         tutupPratinjauModal();
     }
