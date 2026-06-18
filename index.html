@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- Library Render & Cetak PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -294,12 +293,10 @@
 <div class="card">
     <button class="theme-toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i><i class="fa-solid fa-sun"></i></button>
     
-    <!-- LOKASI GPS & JAM OTOMATIS (POSISI TENGAH) -->
     <div class="live-clock-widget">
         <i class="fa-solid fa-circle"></i><span id="liveDateTime">Sinkronisasi Waktu...</span>
     </div>
 
-    <!-- PANEL SISI KIRI: INFORMASI PROFIL, ALUR, CATATAN DAN PRIVASI (UTUH & AMAN) -->
     <div class="left-side">
         <div class="profile">
             <img src="https://lh3.googleusercontent.com/d/1maGet0jkFl4I76lxKVH9FZLNj9h22usX" alt="Muhammad Avie Sienna" class="profile-img">
@@ -348,7 +345,6 @@
         </div>
     </div>
 
-    <!-- PANEL SISI KANAN: FORM & AKSI INTEGRASI 2 TOMBOL -->
     <div class="right-side">
         <div class="section-title">Isi Jadwal Rencana Pertemuan</div>
         
@@ -359,7 +355,6 @@
             </div>
             <div class="form-group">
                 <label for="userCityInput">Lokasi Kota Anda (Ubah Manual / GPS)</label>
-                <!-- Menambahkan trigger event listener oninput agar jam berganti zona waktu ketika diketik manual -->
                 <input type="text" id="userCityInput" placeholder="Mencari titik koordinat..." oninput="perbaruiJamWidget()">
             </div>
             <div class="form-group">
@@ -375,7 +370,6 @@
                 <textarea id="meetNote" placeholder="Tulis pokok atau agenda bahasan pertemuan secara ringkas..."></textarea>
             </div>
 
-            <!-- DUA TOMBOL UTAMA TERINTEGRASI -->
             <div class="btn-dual-container">
                 <button class="action-main-btn btn-submit-wa" onclick="jalankanProsedurAjukanWA()">
                     <i class="fa-brands fa-whatsapp"></i> 1. Ajukan Pertemuan ke WA
@@ -387,10 +381,9 @@
         </div>
     </div>
 
-    <div class="footer">© 2026 Muhammad Avie Sienna. All Rights Reserved.</div>
+    <div class="footer">© <span id="copyrightYear">2026</span> Muhammad Avie Sienna.</div>
 </div>
 
-<!-- CONTAINER MODAL PREVIEW PDF -->
 <div class="modal-overlay" id="previewModal">
     <div class="modal-box">
         <div class="modal-header">
@@ -405,7 +398,6 @@
     </div>
 </div>
 
-<!-- TEMPLATE HITUNGAN FISIK DOKUMEN BELAKANG LAYAR -->
 <div id="pdf-template">
     <div class="pdf-header">
         <h2 style="font-size: 21px; font-weight:700;">MUHAMMAD AVIE SIENNA</h2>
@@ -543,11 +535,11 @@
         const sapaan = ambilSapaanWaktu();
         let teks = `Yth. Bapak *Muhammad Avie Sienna*,\n\n`;
         teks += `Selamat ${sapaan} Pak, saya *${data.nama}*. Melalui tautan ini, saya bermaksud untuk mengajukan permohonan koordinasi waktu janji temu langsung bersama Bapak.\n\n`;
-        teks += `Adapun rincian jadwal yang saya persiapkan dari *${data.kota}*:\n`;
+        teks += `Adapun detail janji temu, sebagai berikut :\n`;
         teks += `📅 Hari/Tanggal: *${data.tglRapi}*\n`;
         teks += `⏰ Waktu/Jam: *${data.jam} ${data.zonaAktif}*\n`;
         teks += `📝 Pokok Agenda: *${data.note}*\n\n`;
-        teks += `Berkas administrasi berupa Surat Konfirmasi Janji Temu saat ini sedang saya tinjau dalam sistem pratinjau aplikasi dan akan segera saya cetak sebagai lampiran bukti fisik kehadiran. Mohon konfirmasi ketersediaan waktu Bapak, terima kasih banyak atas perhatiannya.`;
+        teks += `Berkas administrasi berupa Surat Konfirmasi Janji Temu saat ini sedang saya tinjau dalam sistem pratinjau aplikasi dan akan segera saya cetak dan saya bawa saat pertemuan sebagai lampiran bukti fisik kehadiran. Mohon konfirmasi ketersediaan waktu Bapak, terima kasih banyak atas perhatiannya.`;
 
         window.open(`https://wa.me/${WA_NOMOR_TUJUAN}?text=${encodeURIComponent(teks)}`, '_blank');
 
@@ -583,6 +575,9 @@
         document.documentElement.setAttribute('data-theme', t);
     }
     document.documentElement.setAttribute('data-theme', 'dark');
+
+    // Otomatis memperbarui tahun copyright sesuai tahun berjalan di perangkat pengguna
+    document.getElementById('copyrightYear').textContent = new Date().getFullYear();
 </script>
 
 </body>
